@@ -1,3 +1,7 @@
+server:
+  port: 9001
+  servlet:
+    context-path: /dear-future
 spring:
   jackson:
     default-property-inclusion: non-null
