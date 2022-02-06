@@ -1,0 +1,16 @@
+spring:
+  jackson:
+    default-property-inclusion: non-null
+  datasource:
+    url: jdbc:mysql://localhost:8889/dear_future
+    username: root
+    password: root
+  jpa:
+    show-sql: false
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL8Dialect
+    generate-ddl: true
+    open-in-view: false
