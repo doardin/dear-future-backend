@@ -1,5 +1,7 @@
 package br.com.dearfuture.application.user.service;
 
+import java.time.LocalDate;
+
 import org.springframework.stereotype.Service;
 
 import br.com.dearfuture.application.user.dto.PostCreateUserDto;
@@ -18,7 +20,7 @@ public class UserAppService {
     public void postCreateUser(PostCreateUserDto postCreateUserDto){
         User user = new User();
         user.setName(postCreateUserDto.getName());
-        user.setBirthDate(postCreateUserDto.getBirthDate());
+        user.setBirthDate(LocalDate.parse(postCreateUserDto.getBirthDate()));
         user.setUsername(postCreateUserDto.getUsername());
         user.setEmail(postCreateUserDto.getEmail());
         user.setPassword(PasswordUtil.encrypt(postCreateUserDto.getPassword()));
