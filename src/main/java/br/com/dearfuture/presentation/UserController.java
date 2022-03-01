@@ -5,11 +5,14 @@ import javax.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.dearfuture.application.user.dto.PostCreateUserDto;
 import br.com.dearfuture.application.user.dto.PostUserAuthenticationDto;
+import br.com.dearfuture.application.user.dto.PutUpdateUserDto;
+import br.com.dearfuture.application.user.dto.ResponseUserAuthenticationDto;
 import br.com.dearfuture.application.user.service.UserAppService;
 import lombok.RequiredArgsConstructor;
 
@@ -27,8 +30,14 @@ public class UserController {
     }
 
     @PostMapping("/user/sign-in")
-    public ResponseEntity<?> postUserAuthentication(@RequestBody @Valid PostUserAuthenticationDto postUserAuthenticationDto){
-        this.userAppService.postUserAuthentication(postUserAuthenticationDto);
+    public ResponseEntity<ResponseUserAuthenticationDto> postUserAuthentication(@RequestBody @Valid PostUserAuthenticationDto postUserAuthenticationDto){
+        ResponseUserAuthenticationDto responseUserAuthenticationDto = this.userAppService.postUserAuthentication(postUserAuthenticationDto);
+        return ResponseEntity.ok(responseUserAuthenticationDto);
+    }
+
+    @PutMapping("/user")
+    public ResponseEntity<?> putUpdateUser(@RequestBody @Valid PutUpdateUserDto putUpdateUserDto){
+        this.userAppService.putUpdateUser(putUpdateUserDto);
         return ResponseEntity.ok().build();
     }
 

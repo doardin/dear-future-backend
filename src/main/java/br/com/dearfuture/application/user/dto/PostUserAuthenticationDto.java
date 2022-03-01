@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-@GroupSequence({PostCreateUserDto.class, GV0001.class, GV0002.class})
+@GroupSequence({PostUserAuthenticationDto.class, GV0001.class, GV0002.class})
 public class PostUserAuthenticationDto {
 
     @NotBlank(message = "Este campo é obrigatório", groups = { GV0001.class })

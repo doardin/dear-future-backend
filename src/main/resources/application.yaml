@@ -18,3 +18,10 @@ spring:
         dialect: org.hibernate.dialect.MySQL8Dialect
     generate-ddl: true
     open-in-view: false
+    
+config:
+  jwt:
+    keystore-location: key-store.jks
+    keystore-password: 69465197
+    key-alias: keystore
+    private-key-passphrase: 69465197

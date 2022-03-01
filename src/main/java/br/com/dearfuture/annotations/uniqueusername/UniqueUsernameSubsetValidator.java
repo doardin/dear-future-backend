@@ -14,7 +14,7 @@ public class UniqueUsernameSubsetValidator implements ConstraintValidator<Unique
     @Override
     public boolean isValid(String value, ConstraintValidatorContext context){
         if(value == null) return true;
-        return this.userRepository.getByUsername(value).isEmpty();
+        return this.userRepository.getUserByUsername(value).isEmpty();
     }
 
 }

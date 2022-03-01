@@ -14,7 +14,7 @@ public class UniqueEmailSubsetValidator implements ConstraintValidator<UniqueEma
     @Override
     public boolean isValid(String value, ConstraintValidatorContext context){
         if(value == null) return true;
-        return this.userRepository.getByEmail(value).isEmpty();
+        return this.userRepository.getUserByEmail(value).isEmpty();
     }
 
 }
