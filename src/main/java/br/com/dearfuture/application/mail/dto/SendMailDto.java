@@ -1,4 +1,4 @@
-package br.com.dearfuture.application.user.dto;
+package br.com.dearfuture.application.mail.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,6 +9,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 @Builder
-public class ResponseUserAuthenticationDto {
-    private String jwtToken;
+public class SendMailDto {
+
+    private String text;
+    private String subject;
+    private String[] recipients;
 }

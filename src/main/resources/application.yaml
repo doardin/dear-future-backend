@@ -3,6 +3,20 @@ server:
   servlet:
     context-path: /dear-future
 spring:
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: eduardo.lopes234@gmail.com
+    password: uvavcugbrojhbelx
+    properties:
+      mail:
+        smtp:
+          auth: true
+          connectiontimeout: 5000
+          timeout: 5000
+          writetimeout: 5000
+          starttls:
+            enable: true
   jackson:
     default-property-inclusion: non-null
   datasource:

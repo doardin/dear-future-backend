@@ -3,7 +3,6 @@ package br.com.dearfuture.domain.user.entity;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.UUID;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -14,6 +13,7 @@ import javax.persistence.PreUpdate;
 
 import br.com.dearfuture.domain.letter.entity.Letter;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -21,10 +21,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 @Entity
+@Builder
 public class User {
     
     @Id
-    private String id = UUID.randomUUID().toString();
+    private String id;
 
     private String name;
     private LocalDate birthDate;

@@ -9,11 +9,13 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.com.dearfuture.annotations.authenticateduser.AuthenticateUser;
 import br.com.dearfuture.application.user.dto.PostCreateUserDto;
 import br.com.dearfuture.application.user.dto.PostUserAuthenticationDto;
 import br.com.dearfuture.application.user.dto.PutUpdateUserDto;
 import br.com.dearfuture.application.user.dto.ResponseUserAuthenticationDto;
 import br.com.dearfuture.application.user.service.UserAppService;
+import br.com.dearfuture.domain.user.entity.User;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -36,8 +38,8 @@ public class UserController {
     }
 
     @PutMapping("/user")
-    public ResponseEntity<?> putUpdateUser(@RequestBody @Valid PutUpdateUserDto putUpdateUserDto){
-        this.userAppService.putUpdateUser(putUpdateUserDto);
+    public ResponseEntity<?> putUpdateUser(@RequestBody @Valid PutUpdateUserDto putUpdateUserDto, @AuthenticateUser User user){
+        this.userAppService.putUpdateUser(putUpdateUserDto, user);
         return ResponseEntity.ok().build();
     }
 

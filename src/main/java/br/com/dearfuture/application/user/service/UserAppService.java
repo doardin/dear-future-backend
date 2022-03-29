@@ -1,10 +1,10 @@
 package br.com.dearfuture.application.user.service;
 
 import java.time.LocalDate;
+import java.util.UUID;
 
 import org.springframework.stereotype.Service;
 
-import br.com.dearfuture.application.general.dto.ResponseCredentialsDto;
 import br.com.dearfuture.application.user.dto.PostCreateUserDto;
 import br.com.dearfuture.application.user.dto.PostUserAuthenticationDto;
 import br.com.dearfuture.application.user.dto.PutUpdateUserDto;
@@ -15,7 +15,6 @@ import br.com.dearfuture.exceptions.EmailAlreadyInUseException;
 import br.com.dearfuture.exceptions.UserNotFoundException;
 import br.com.dearfuture.exceptions.UsernameAlreadyInUseException;
 import br.com.dearfuture.utils.EntityMapper;
-import br.com.dearfuture.utils.HeadersUtil;
 import br.com.dearfuture.utils.JwtUtil;
 import br.com.dearfuture.utils.PasswordUtil;
 import lombok.RequiredArgsConstructor;
@@ -28,21 +27,20 @@ public class UserAppService {
     private final JwtUtil jwtUtil;
 
     public void postCreateUser(PostCreateUserDto postCreateUserDto){
-        User user = new User();
-        user.setName(postCreateUserDto.getName());
-        user.setBirthDate(LocalDate.parse(postCreateUserDto.getBirthDate()));
-        user.setUsername(postCreateUserDto.getUsername());
-        user.setEmail(postCreateUserDto.getEmail());
-        user.setPassword(PasswordUtil.encrypt(postCreateUserDto.getPassword()));
+        User user = User.builder()
+            .id(UUID.randomUUID().toString())
+            .name(postCreateUserDto.getName())
+            .birthDate(LocalDate.parse(postCreateUserDto.getBirthDate()))
+            .username(postCreateUserDto.getUsername())
+            .email(postCreateUserDto.getEmail())
+            .password(PasswordUtil.encrypt(postCreateUserDto.getPassword())).build();
         this.userRepository.save(user);
     }
     
     public ResponseUserAuthenticationDto postUserAuthentication(PostUserAuthenticationDto postUserAuthenticationDto){
-        User user = this.userRepository.getUserByEmailOrUsernameAndPassword(postUserAuthenticationDto.getAlias(), PasswordUtil.encrypt(postUserAuthenticationDto.getPassword())).orElseThrow();
+        User user = this.userRepository.getUserByEmailOrUsernameAndPassword(postUserAuthenticationDto.getAlias(), PasswordUtil.encrypt(postUserAuthenticationDto.getPassword())).orElseThrow(UserNotFoundException::new);
         String token = jwtUtil.createJwtForClaims(user.getId(), user.getId(), null);
-
-        ResponseUserAuthenticationDto responseUserAuthenticationDto = ResponseUserAuthenticationDto.builder()
-                                                                                                    .jwtToken(token).build();
+        ResponseUserAuthenticationDto responseUserAuthenticationDto = ResponseUserAuthenticationDto.builder().jwtToken(token).build();
         return responseUserAuthenticationDto;
     }
 
@@ -51,12 +49,8 @@ public class UserAppService {
         this.userRepository.getUserByUsername(putUpdateUserDto.getUsername()).ifPresent((us) -> { if(!us.getId().equalsIgnoreCase(user.getId())) throw new UsernameAlreadyInUseException(); });
     }
 
-    public void putUpdateUser(PutUpdateUserDto putUpdateUserDto){
-        ResponseCredentialsDto credentialsDto = HeadersUtil.decodeJwt();
-        User user = this.userRepository.getUserById(credentialsDto.getUserId()).orElseThrow(UserNotFoundException::new);
-
+    public void putUpdateUser(PutUpdateUserDto putUpdateUserDto, User user){
         this.onBeforeUpdateUser(putUpdateUserDto, user);
-        
         EntityMapper.copyNonNullProperties(putUpdateUserDto, user);
         this.userRepository.save(user);
     }

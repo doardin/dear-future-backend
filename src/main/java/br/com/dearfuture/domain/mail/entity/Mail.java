@@ -1,20 +1,17 @@
-package br.com.dearfuture.domain.email.entity;
+package br.com.dearfuture.domain.mail.entity;
 
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.UUID;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 
 import br.com.dearfuture.domain.letter.entity.Letter;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -22,20 +19,16 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 @Entity
-public class Email {
+@Builder
+public class Mail {
     
     @Id
-    private String id = UUID.randomUUID().toString();
+    private String id;
 
     private String address;
 
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "email_letter", 
-        joinColumns = @JoinColumn(name = "emailId"),
-        inverseJoinColumns = @JoinColumn(name = "letterId")
-    )
-    private List<Letter> letters;
-
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Letter letter;
 
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
